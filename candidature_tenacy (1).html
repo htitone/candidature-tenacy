@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo Titone - BDR @ Tenacy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#6366f1;--dark:#1a1a1a;--light:#f8fafc;--white:#fff;--gray:#6b7280;--success:#10b981;--cyber:#00d9ff}
+body{font-family:'Inter',sans-serif;background:var(--light);color:var(--dark);line-height:1.7;overflow-x:hidden}
+.container{max-width:1400px;margin:0 auto;padding:0 32px}
+
+/* Header Sticky */
+.header-sticky{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);z-index:1000;padding:1rem 0;box-shadow:0 2px 20px rgba(0,0,0,0.08);transform:translateY(-100%);transition:transform 0.3s ease}
+.header-sticky.visible{transform:translateY(0)}
+.header-content{display:flex;justify-content:space-between;align-items:center;gap:2rem}
+.header-name{font-weight:800;font-size:1.25rem;color:var(--dark)}
+.header-contacts{display:flex;gap:1rem;flex-wrap:wrap}
+.header-contacts a{padding:0.5rem 1rem;background:var(--accent);color:white;text-decoration:none;border-radius:50px;font-size:0.9rem;font-weight:600;transition:all 0.3s}
+.header-contacts a:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(99,102,241,0.3)}
+
+/* Hero */
+.hero{min-height:100vh;background:linear-gradient(135deg,#1a1a1a,#0a1929);display:flex;align-items:center;justify-content:center;text-align:center;position:relative;padding:2rem 0}
+.hero-title{font-size:clamp(3rem,7vw,5rem);font-weight:800;color:#fff;margin-bottom:2rem;line-height:1.1}
+.highlight{background:linear-gradient(135deg,#00d9ff,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-subtitle{font-size:1.5rem;color:#e5e4e2;margin-bottom:1rem;font-weight:600}
+.hero-pitch{font-size:1.125rem;color:#e5e4e2;max-width:700px;margin:0 auto 3rem;opacity:0.9;line-height:1.8}
+.scroll-indicator{position:absolute;bottom:3rem;cursor:pointer;text-align:center;left:50%;transform:translateX(-50%)}
+.scroll-text{font-size:0.875rem;color:#e5e4e2;text-transform:uppercase;margin-bottom:1rem}
+.scroll-arrow{width:4px;height:4rem;background:linear-gradient(to bottom,var(--cyber),transparent);margin:0 auto;position:relative}
+.scroll-arrow::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);border-left:10px solid transparent;border-right:10px solid transparent;border-top:15px solid var(--cyber);animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+/* Stats Section */
+.stats-section{padding:6rem 0;background:var(--white);margin-top:-3rem;position:relative;z-index:2}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2.5rem;max-width:1000px;margin:0 auto}
+.stat-card{background:linear-gradient(135deg,#00d9ff,#6366f1);padding:3rem 2rem;border-radius:24px;text-align:center;color:#fff;box-shadow:0 20px 60px rgba(0,217,255,0.25);transition:all 0.4s ease;animation:fadeInUp 0.6s ease forwards;opacity:0}
+.stat-card:nth-child(1){animation-delay:0.1s}
+.stat-card:nth-child(2){animation-delay:0.2s}
+.stat-card:nth-child(3){animation-delay:0.3s}
+.stat-card:hover{transform:translateY(-10px) scale(1.02)}
+.stat-number{font-size:3.5rem;font-weight:800}
+@keyframes fadeInUp{to{opacity:1;transform:translateY(0)}from{transform:translateY(20px)}}
+
+/* Sections */
+.section{padding:8rem 0}
+.section-title{font-size:clamp(2.5rem,6vw,4rem);font-weight:800;text-align:center;margin-bottom:4rem}
+.section-subtitle{font-size:2rem;font-weight:600;text-align:center;margin-bottom:3rem}
+
+/* Why Me Section */
+.why-me-section{background:linear-gradient(135deg,#f8fafc,#e5e7eb);padding:6rem 0}
+.why-me-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2.5rem;max-width:1200px;margin:0 auto}
+.why-me-card{background:white;padding:3rem;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.08);position:relative;overflow:hidden;transition:all 0.4s;display:flex;flex-direction:column}
+.why-me-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(135deg,#00d9ff,#6366f1)}
+.why-me-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.12)}
+.why-me-icon{font-size:3rem;margin-bottom:1.5rem}
+.why-me-title{font-size:1.5rem;font-weight:700;margin-bottom:1rem;color:var(--accent)}
+.why-me-description{font-size:1.125rem;line-height:1.8;color:var(--gray)}
+.why-me-highlight{background:linear-gradient(135deg,rgba(0,217,255,0.1),rgba(99,102,241,0.1));padding:1rem;border-radius:12px;margin-top:auto;font-weight:600;color:var(--accent)}
+
+/* Quick Wins Section */
+.quick-wins-section{background:var(--white);padding:6rem 0}
+.quick-wins-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem}
+.quick-win-card{background:linear-gradient(135deg,#f8fafc,#fff);padding:2.5rem;border-radius:20px;border-left:4px solid var(--cyber);transition:all 0.3s;position:relative}
+.quick-win-card:hover{transform:translateX(8px);box-shadow:0 12px 32px rgba(0,0,0,0.1)}
+.quick-win-number{position:absolute;top:1rem;right:1rem;width:40px;height:40px;background:linear-gradient(135deg,#00d9ff,#6366f1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:1.25rem}
+.quick-win-title{font-size:1.25rem;font-weight:700;margin-bottom:0.75rem;color:var(--dark);padding-right:50px}
+.quick-win-description{font-size:1rem;color:var(--gray);line-height:1.7}
+
+/* Challenge Section */
+.challenge-section{background:linear-gradient(135deg,#0a1929,#1a1a1a);color:white;padding:8rem 0}
+.challenge-header{text-align:center;margin-bottom:4rem}
+.challenge-badge{display:inline-block;background:rgba(0,217,255,0.2);border:2px solid var(--cyber);color:var(--cyber);padding:0.75rem 2rem;border-radius:50px;font-weight:700;margin-bottom:2rem;font-size:1.125rem}
+.challenge-title{color:white;font-size:2.5rem;font-weight:800;margin-bottom:1rem}
+.challenge-subtitle{color:#e5e4e2;font-size:1.25rem;opacity:0.9;max-width:700px;margin:0 auto}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;max-width:1000px;margin:3rem auto}
+.kpi-card{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(0,217,255,0.2);padding:2.5rem 2rem;border-radius:20px;text-align:center;transition:all 0.4s}
+.kpi-card:hover{background:rgba(255,255,255,0.1);transform:translateY(-8px)}
+.kpi-number{font-size:3rem;font-weight:800;background:linear-gradient(135deg,#00d9ff,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.5rem}
+.kpi-label{font-size:1rem;color:#e5e4e2;font-weight:600;margin-bottom:0.25rem}
+.kpi-detail{font-size:0.875rem;color:#9ca3af}
+
+/* Tools Section */
+.tools-section{background:var(--white);padding:8rem 0}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin:2rem 0}
+.tool-badge{background:var(--accent);color:var(--white);padding:0.75rem 1.5rem;border-radius:50px;text-align:center;font-weight:600;font-size:0.95rem;transition:all 0.3s;box-shadow:0 4px 12px rgba(99,102,241,0.2)}
+.tool-badge:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(99,102,241,0.3)}
+
+/* Methodology */
+.methodology-card{background:var(--light);padding:3rem;border-radius:24px;margin:3rem 0;border-left:6px solid var(--cyber)}
+.methodology-title{font-size:1.75rem;font-weight:700;margin-bottom:2rem;color:var(--accent)}
+.methodology-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:2rem}
+.step-card{background:var(--white);padding:2rem;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:all 0.3s}
+.step-card:hover{transform:translateY(-5px)}
+.step-number{font-size:2rem;font-weight:800;color:var(--cyber);margin-bottom:1rem}
+.step-title{font-weight:700;margin-bottom:0.5rem}
+.step-description{color:var(--gray);font-size:0.95rem}
+
+/* Business Understanding */
+.business-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2.5rem;margin-bottom:5rem}
+.problem-card{background:#fff;padding:3rem;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.08);border-top:6px solid var(--cyber);transition:all 0.4s ease}
+.problem-card:hover{transform:translateY(-8px)}
+.problem-number{width:50px;height:50px;background:linear-gradient(135deg,#00d9ff,#6366f1);border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;margin-bottom:1.5rem;font-size:1.25rem}
+.problem-card p{font-size:1.125rem;line-height:1.7;color:var(--gray)}
+.solution-card{background:#fff;padding:4rem;border-radius:32px;box-shadow:0 8px 32px rgba(0,0,0,0.08);margin:3rem auto;max-width:900px;border-top:8px solid var(--cyber)}
+.solution-card p{font-size:1.25rem;line-height:1.8;color:var(--gray);text-align:center}
+
+/* Why Tenacy */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem;margin-top:4rem}
+.why-card{background:#fff;padding:3rem;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.08);border-left:6px solid var(--cyber);transition:all 0.4s}
+.why-card:hover{transform:translateX(10px)}
+.why-number{font-size:3rem;font-weight:800;background:linear-gradient(135deg,#00d9ff,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1rem}
+.why-title{font-size:1.5rem;font-weight:700;margin-bottom:1rem}
+.why-description{font-size:1.125rem;line-height:1.7;color:var(--gray)}
+
+/* Plan 30-60-90 */
+.plan-timeline{max-width:1000px;margin:0 auto}
+.plan-item{display:grid;grid-template-columns:200px 1fr;gap:4rem;margin-bottom:5rem}
+.plan-period-number{font-size:4rem;font-weight:800;background:linear-gradient(135deg,#00d9ff,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.plan-period-label{font-size:1.25rem;font-weight:600;color:var(--gray)}
+.plan-content{background:#fff;padding:3rem;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.08);border-left:6px solid var(--cyber);transition:all 0.4s}
+.plan-content:hover{transform:translateY(-5px)}
+.plan-title{font-size:1.75rem;font-weight:700;margin-bottom:1.5rem}
+.plan-list{list-style:none}
+.plan-list li{padding-left:2rem;margin-bottom:1rem;position:relative;font-size:1.125rem;color:var(--gray)}
+.plan-list li::before{content:'✓';position:absolute;left:0;color:var(--cyber);font-weight:700}
+
+/* Profile Section */
+.profile-section{background:#0c0c0c;color:#fff;padding:10rem 0}
+.profile-grid{display:grid;grid-template-columns:1fr 2fr;gap:6rem;align-items:center;margin-bottom:6rem}
+.profile-image{width:350px;height:350px;border-radius:50%;margin:0 auto;box-shadow:0 30px 60px rgba(0,217,255,0.3);border:6px solid rgba(0,217,255,0.2);overflow:hidden;transition:all 0.4s}
+.profile-image:hover{transform:scale(1.05);border-color:var(--cyber)}
+.profile-image img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%)}
+.profile-image:hover img{filter:grayscale(0%)}
+.story-content h3{font-size:2.5rem;margin-bottom:2rem;background:linear-gradient(135deg,#00d9ff,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.story-timeline{position:relative;padding-left:3rem}
+.story-timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,#00d9ff,#6366f1)}
+.story-item{position:relative;margin-bottom:3rem;padding-left:2rem;transition:all 0.4s}
+.story-item:hover{transform:translateX(10px)}
+.story-item::before{content:'';position:absolute;left:-1.25rem;top:0.5rem;width:1.25rem;height:1.25rem;background:var(--cyber);border-radius:50%;box-shadow:0 0 0 6px #0c0c0c,0 0 20px var(--cyber)}
+.story-period{font-weight:700;color:var(--cyber);margin-bottom:0.75rem;font-size:1.125rem}
+.story-description{color:#e5e4e2;line-height:1.8;font-size:1.125rem}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2.5rem;margin-top:4rem}
+.skill-card{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(0,217,255,0.2);padding:3rem;border-radius:24px;text-align:center;transition:all 0.4s}
+.skill-card:hover{transform:translateY(-8px);background:rgba(255,255,255,0.1);border-color:var(--cyber)}
+.skill-icon{font-size:2.5rem;margin-bottom:1.5rem}
+.skill-title{font-weight:700;margin-bottom:1rem;font-size:1.25rem;color:var(--cyber)}
+.skill-description{color:#e5e4e2;opacity:0.8}
+
+/* CTA Section */
+.cta-section{background:linear-gradient(135deg,#0a1929,#1a1a1a);padding:10rem 0;text-align:center;color:#fff;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0 C300,80 600,80 900,20 L900,120 L0,120 Z" fill="rgba(0,217,255,0.1)"/></svg>');background-size:cover;opacity:0.5}
+.cta-content{position:relative;z-index:1}
+.cta-badge{display:inline-block;background:rgba(16,185,129,0.2);border:2px solid var(--success);color:var(--success);padding:0.75rem 2rem;border-radius:50px;font-weight:700;margin-bottom:2rem;font-size:1rem}
+.cta-title{font-size:clamp(2.5rem,5vw,3.5rem);font-weight:800;margin-bottom:2rem}
+.cta-subtitle{font-size:1.375rem;opacity:0.9;margin-bottom:3rem;max-width:700px;margin-left:auto;margin-right:auto}
+.cta-buttons{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-top:3rem}
+.btn{padding:1.25rem 2.5rem;border-radius:60px;font-weight:600;text-decoration:none;transition:all 0.4s;border:2px solid transparent;display:inline-flex;align-items:center;gap:0.75rem;font-size:1.125rem;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#00d9ff,#6366f1);color:#fff}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(0,217,255,0.4)}
+.btn-secondary{background:transparent;color:#fff;border-color:rgba(255,255,255,0.3)}
+.btn-secondary:hover{background:rgba(255,255,255,0.1);border-color:#fff}
+
+/* Location Badge */
+.location-badge{display:inline-block;background:rgba(0,217,255,0.1);border:2px solid var(--cyber);color:var(--cyber);padding:0.75rem 2rem;border-radius:50px;font-weight:700;margin-bottom:2rem;font-size:1rem}
+
+/* Responsive */
+@media (max-width:768px){
+.container{padding:0 20px}
+.profile-grid,.plan-item{grid-template-columns:1fr;gap:2rem;text-align:center}
+.profile-image{width:280px;height:280px}
+.business-grid,.why-me-grid,.quick-wins-grid{grid-template-columns:1fr}
+.btn{width:100%;max-width:320px;justify-content:center}
+.tools-grid{grid-template-columns:repeat(2,1fr)}
+.header-name{font-size:1rem}
+.header-contacts{gap:0.5rem}
+.header-contacts a{padding:0.5rem 0.75rem;font-size:0.8rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Header Sticky -->
+<header class="header-sticky" id="stickyHeader">
+<div class="container">
+<div class="header-content">
+<div class="header-name">Hugo Titone → BDR @ Tenacy</div>
+<div class="header-contacts">
+<a href="/cdn-cgi/l/email-protection#442c31232b6a302d302b2a21042329252d286a272b29">✉️ Email</a>
+<a href="tel:+33778203627">📞 Appeler</a>
+</div>
+</div>
+</div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+<div class="container">
+<div class="hero-content">
+<h1 class="hero-title">
+Candidature de <span class="highlight">Hugo</span><br>au poste de <span class="highlight">BDR</span><br>chez <span class="highlight">Tenacy</span>
+</h1>
+<p class="hero-subtitle">Cybersécurité × Prospection = votre futur TOP PERFORMER</p>
+<div class="location-badge">📍 Basé à Lyon - Disponible immédiatement</div>
+</div>
+</div>
+</section>
+
+<!-- Video Section -->
+<section style="padding:6rem 0;background:linear-gradient(135deg,#f8fafc,#e5e7eb)">
+<div class="container">
+<div style="text-align:center;margin-bottom:3rem">
+<h3 style="font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;color:var(--dark)">
+🎥 Ma présentation vidéo
+</h3>
+<p style="color:var(--gray);font-size:1.125rem">
+Hey Tenacy, j'ai un message pour vous !
+</p>
+</div>
+
+<div style="max-width:900px;margin:0 auto">
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,0.15);border:6px solid white">
+<iframe 
+  src="https://www.youtube-nocookie.com/embed/JkZpYTjY6YU?rel=0&modestbranding=1" 
+  frameborder="0" 
+  webkitallowfullscreen 
+  mozallowfullscreen 
+  allowfullscreen 
+  style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:18px">
+</iframe>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+<div class="container">
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-number">+175%</div><div>Croissance CA<br>(350k€→950k€)</div></div>
+<div class="stat-card"><div class="stat-number">+180</div><div>Nouveaux clients<br>mid-market</div></div>
+<div class="stat-card"><div class="stat-number">500</div><div>Cold calls réalisés<br>en 15 jours</div></div>
+</div>
+</div>
+</section>
+
+<!-- Why Me Section -->
+<section class="why-me-section">
+<div class="container">
+<h2 class="section-title">Pourquoi choisir mon profil ?</h2>
+<div class="why-me-grid">
+<div class="why-me-card">
+<div class="why-me-icon">🎯</div>
+<div class="why-me-title">Expérience terrain approuvée</div>
+<div class="why-me-description">
+5 ans chez AkzoNobel à gérer 180 comptes mid-market et grands comptes. Je connais la réalité du cycle de vente long, la gestion de pipelines complexes et la négociation B2B auprès de décideurs C-level.
+</div>
+<div class="why-me-highlight">
++175% de croissance CA en 5 ans
+</div>
+</div>
+
+<div class="why-me-card">
+<div class="why-me-icon">⚡</div>
+<div class="why-me-title">Stack BDR moderne maîtrisé</div>
+<div class="why-me-description">
+Formation intensive Akimbo Academy : LemList, Sales Navigator, PhantomBuster, qualification BANT/MEDDIC, séquences multicanales. Opérationnel dès J1.
+</div>
+<div class="why-me-highlight">
+500 cold calls en 15 jours • 22,6% contact rate
+</div>
+</div>
+
+<div class="why-me-card">
+<div class="why-me-icon">🔐</div>
+<div class="why-me-title">Affinité avec la cybersécurité</div>
+<div class="why-me-description">
+Passionné de tech avec un réel intérêt pour la cybersécurité. Je me forme activement sur des plateformes comme Cisco, TryHackMe, RootMe et OpenClassrooms pour mieux comprendre les enjeux techniques et parler le même langage que vos prospects RSSI/DSI.
+</div>
+<div class="why-me-highlight">
+Mindset Scale-up • Disponible immédiatement
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Challenge Section -->
+<section class="challenge-section">
+<div class="container">
+<div class="challenge-header">
+<div class="challenge-badge">🏆 Challenge Akimbo Academy - 15 jours</div>
+<h2 class="challenge-title">Mon baptême du feu en prospection B2B SaaS</h2>
+<p class="challenge-subtitle">
+Sprint intensif de prospection pour ArcaScience : de l'apprentissage du marché à la génération d'opportunités qualifiées.
+</p>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi-card">
+<div class="kpi-number">500</div>
+<div class="kpi-label">Cold Calls</div>
+<div class="kpi-detail">en 15 jours via AirCall</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-number">113</div>
+<div class="kpi-label">Conversations</div>
+<div class="kpi-detail">22,6% de contact</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-number">38</div>
+<div class="kpi-label">Intérêts générés</div>
+<div class="kpi-detail">Mail + rappels planifiés</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-number">13</div>
+<div class="kpi-label">RDV obtenus</div>
+<div class="kpi-detail">2,6% conversion</div>
+</div>
+</div>
+
+<div style="margin-top:3rem;text-align:center">
+<p style="font-size:1.125rem;color:#e5e4e2;max-width:800px;margin:0 auto;line-height:1.8">
+✅ Fichiers de prospection (Sales Navigator + PhantomBuster)<br>
+✅ Séquences multicanales personnalisées (LemList)<br>
+✅ Qualification rigoureuse (BANT/MEDDIC)
+</p>
+</div>
+</div>
+</section>
+
+<!-- Mon engagement Section -->
+<section class="quick-wins-section">
+<div class="container">
+<h2 class="section-title">💼 Mon engagement dès le départ</h2>
+<p style="text-align:center;font-size:1.25rem;color:var(--gray);max-width:700px;margin:0 auto 3rem">
+Comment je compte contribuer à votre équipe BDR
+</p>
+<div class="quick-wins-grid">
+<div class="quick-win-card">
+<div class="quick-win-number">1</div>
+<div class="quick-win-title">Maîtrise du sujet cyber</div>
+<div class="quick-win-description">
+M'immerger dans l'univers de la cybersécurité : comprendre les enjeux RSSI/DSI, les frameworks de conformité, votre plateforme de pilotage et vos cas d'usage.
+</div>
+</div>
+
+<div class="quick-win-card">
+<div class="quick-win-number">2</div>
+<div class="quick-win-title">Apprentissage du pitch</div>
+<div class="quick-win-description">
+Observer l'équipe, m'approprier votre discours commercial et les objections courantes des RSSI/DSI avant de prendre le téléphone.
+</div>
+</div>
+
+<div class="quick-win-card">
+<div class="quick-win-number">3</div>
+<div class="quick-win-title">Génération d'opportunités</div>
+<div class="quick-win-description">
+Contribuer rapidement à la prise de RDV qualifiés et à la détection d'opportunités sur votre marché ETI/Grands Comptes.
+</div>
+</div>
+
+<div class="quick-win-card">
+<div class="quick-win-number">4</div>
+<div class="quick-win-title">Feedback & amélioration</div>
+<div class="quick-win-description">
+Partager mes retours terrain pour enrichir la connaissance collective et m'intégrer dans une culture de feedback continu.
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Tools Section -->
+<section class="tools-section">
+<div class="container">
+<h2 class="section-title">💪 Ce que j'apporte à Tenacy</h2>
+
+<div>
+<h3 class="section-subtitle" style="font-size:1.75rem;text-align:left;margin-bottom:2rem">1. Méthodologies commerciales maîtrisées</h3>
+
+<div style="margin-bottom:3rem">
+<h4 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:var(--dark)">📋 Frameworks de qualification</h4>
+<p style="font-size:1.125rem;color:var(--gray);margin-bottom:1rem">Pour identifier et qualifier les meilleures opportunités :</p>
+<div class="tools-grid">
+<div class="tool-badge">BANT</div>
+<div class="tool-badge">MEDDIC</div>
+<div class="tool-badge">MEDDPICC</div>
+<div class="tool-badge">BEBEDC</div>
+</div>
+</div>
+
+<div>
+<h4 style="font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:var(--dark)">🎯 Techniques de vente</h4>
+<p style="font-size:1.125rem;color:var(--gray);margin-bottom:1rem">Pour découvrir les besoins et convaincre :</p>
+<div class="tools-grid">
+<div class="tool-badge">SPIN Selling</div>
+<div class="tool-badge">ACRAC</div>
+<div class="tool-badge">Challenger Sale</div>
+</div>
+</div>
+</div>
+
+<div style="margin-top:4rem">
+<h3 class="section-subtitle" style="font-size:1.75rem;text-align:left;margin-bottom:2rem">2. Stack technologique maîtrisé</h3>
+<p style="font-size:1.125rem;color:var(--gray);margin-bottom:2rem">Opérationnel sur l'ensemble des outils de prospection modernes :</p>
+<div class="tools-grid">
+<div class="tool-badge">LemList</div>
+<div class="tool-badge">Sales Navigator</div>
+<div class="tool-badge">Parabola</div>
+<div class="tool-badge">PhantomBuster</div>
+<div class="tool-badge">FullEnrich</div>
+<div class="tool-badge">Lusha</div>
+<div class="tool-badge">Kaspr</div>
+<div class="tool-badge">AirCall</div>
+<div class="tool-badge">Salesforce</div>
+<div class="tool-badge">HubSpot</div>
+</div>
+</div>
+
+<div style="margin-top:5rem">
+<h2 class="section-title">🚀 Mon approche BDR</h2>
+<div class="methodology-card">
+<div class="methodology-title">Philosophie</div>
+<p style="font-size:1.125rem;color:var(--gray);line-height:1.8">Une prospection outbound structurée et disciplinée, basée sur la recherche approfondie des comptes cibles et la personnalisation des approches auprès de décideurs techniques (RSSI, DSI).</p>
+</div>
+
+<h3 class="section-subtitle" style="margin-top:3rem">Ma méthodologie en 4 étapes</h3>
+<div class="methodology-steps">
+<div class="step-card">
+<div class="step-number">1</div>
+<div class="step-title">Recherche & Segmentation</div>
+<div class="step-description">Identification des ETI/Grands Comptes à fort potentiel via Sales Navigator. Focus sur les secteurs sensibles à la cybersécurité.</div>
+</div>
+<div class="step-card">
+<div class="step-number">2</div>
+<div class="step-title">Approche multicanale</div>
+<div class="step-description">Séquences personnalisées combinant email, LinkedIn et téléphone. Langage adapté aux enjeux RSSI/DSI.</div>
+</div>
+<div class="step-card">
+<div class="step-number">3</div>
+<div class="step-title">Qualification rigoureuse</div>
+<div class="step-description">Application de BANT/MEDDIC pour qualifier les opportunités selon les critères Tenacy.</div>
+</div>
+<div class="step-card">
+<div class="step-number">4</div>
+<div class="step-title">Passation qualitative</div>
+<div class="step-description">Transfert d'opportunités chaudes et contextualisées aux AE avec brief complet.</div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- Business Understanding -->
+<section class="section" style="background:var(--white)">
+<div class="container">
+<h2 class="section-title">Ce que j'ai compris de votre business</h2>
+<h3 class="section-subtitle">Les problématiques que vous résolvez</h3>
+<div class="business-grid">
+<div class="problem-card">
+<div class="problem-number">1</div>
+<p><strong>Complexité croissante :</strong> Les RSSI doivent gérer une multitude d'outils et de données disparates, rendant le pilotage de la cybersécurité complexe et chronophage.</p>
+</div>
+<div class="problem-card">
+<div class="problem-number">2</div>
+<p><strong>Manque de visibilité :</strong> Difficulté à avoir une vue consolidée du niveau de sécurité, des risques et de la conformité réglementaire en temps réel.</p>
+</div>
+<div class="problem-card">
+<div class="problem-number">3</div>
+<p><strong>Communication avec la direction :</strong> Les RSSI peinent à traduire les enjeux techniques en langage business pour justifier les investissements cyber auprès du COMEX.</p>
+</div>
+</div>
+
+<h3 class="section-subtitle">Votre solution</h3>
+<div class="solution-card">
+<p>Tenacy centralise et simplifie le pilotage de la cybersécurité. Votre plateforme permet aux RSSI de mesurer, piloter et communiquer efficacement sur leur posture de sécurité, tout en gagnant un temps précieux sur les tâches administratives.</p>
+</div>
+</div>
+</section>
+
+<!-- Why Tenacy -->
+<section class="section" style="background:var(--light)">
+<div class="container">
+<h2 class="section-title">Pourquoi Tenacy ?</h2>
+<div class="why-grid">
+<div class="why-card">
+<div class="why-number">01</div>
+<div class="why-title">Marché porteur</div>
+<div class="why-description">
+La cybersécurité est THE enjeu du moment. Réglementations (NIS2, DORA), cyberattaques en hausse : le besoin de pilotage cyber n'a jamais été aussi fort.
+</div>
+</div>
+
+<div class="why-card">
+<div class="why-number">02</div>
+<div class="why-title">Startup en croissance</div>
+<div class="why-description">
+Vous êtes en forte expansion avec une équipe Sales de 8 personnes. C'est le moment idéal pour rejoindre l'aventure et avoir un impact direct sur la croissance.
+</div>
+</div>
+
+<div class="why-card">
+<div class="why-number">03</div>
+<div class="why-title">Culture & localisation</div>
+<div class="why-description">
+Basé à Lyon (Gorge de Loup), télétravail 2j/semaine, esprit startup convivial. Une culture qui correspond parfaitement à ma façon de travailler et à mes valeurs.
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Plan 30-60-90 -->
+<section class="section" style="background:var(--white)">
+<div class="container">
+<h2 class="section-title">Mon plan 30-60-90 jours</h2>
+<div class="plan-timeline">
+<div class="plan-item">
+<div><div class="plan-period-number">30</div><div class="plan-period-label">Premiers jours</div></div>
+<div class="plan-content">
+<div class="plan-title">🎯 Onboarding & Immersion Cyber</div>
+<ul class="plan-list">
+<li>Maîtriser la plateforme Tenacy et ses cas d'usage</li>
+<li>Comprendre les enjeux RSSI/DSI et le langage cybersécurité</li>
+<li>M'approprier le pitch, les objections et les success stories</li>
+<li>Prendre en main votre stack (CRM, outils de prospection)</li>
+<li>Observer les call/demos des AE et top performers</li>
+</ul>
+</div>
+</div>
+
+<div class="plan-item">
+<div><div class="plan-period-number">60</div><div class="plan-period-label">Jours</div></div>
+<div class="plan-content">
+<div class="plan-title">🚀 Génération d'opportunités</div>
+<ul class="plan-list">
+<li>Générer mes premières opportunités qualifiées</li>
+<li>Atteindre 50% de mon quota mensuel de RDV</li>
+<li>Affiner ma compréhension du marché ETI/GC français</li>
+<li>Collaborer avec Marketing sur les campagnes ABM</li>
+<li>Optimiser mes séquences de prospection multicanales</li>
+</ul>
+</div>
+</div>
+
+<div class="plan-item">
+<div><div class="plan-period-number">90</div><div class="plan-period-label">Jours</div></div>
+<div class="plan-content">
+<div class="plan-title">💪 Performance & Contribution</div>
+<ul class="plan-list">
+<li>Atteindre et dépasser mon quota mensuel</li>
+<li>Devenir expert du discours cybersécurité</li>
+<li>Proposer des améliorations sur le messaging/positionnement</li>
+<li>Contribuer à l'onboarding des futurs BDR</li>
+<li>Devenir un top performer de l'équipe</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Profile Section -->
+<section class="profile-section">
+<div class="container">
+<h2 class="section-title">Mon profil</h2>
+<div class="profile-grid">
+<div class="profile-image">
+<img src="https://i.imgur.com/8LjwEdo.png" alt="Hugo Titone">
+</div>
+<div class="story-content">
+<h3>Mon histoire</h3>
+<div class="story-timeline">
+<div class="story-item">
+<div class="story-period">2012-2014</div>
+<div class="story-description">BTS NRC puis Bachelor Marketing and Business. Apprentissage des fondamentaux de la vente B2B.</div>
+</div>
+<div class="story-item">
+<div class="story-period">2020-2025</div>
+<div class="story-description">Ingénieur Commercial AkzoNobel. 5 ans, 180 clients mid-market, +175% de croissance (350k€→950k€). Maîtrise des cycles de vente longs et de la négociation C-level.</div>
+</div>
+<div class="story-item">
+<div class="story-period">2025</div>
+<div class="story-description">Virage vers le SaaS. Certifications HubSpot, Cisco. Passion pour la tech et envie d'impact mesurable.</div>
+</div>
+<div class="story-item">
+<div class="story-period">Fin 2025</div>
+<div class="story-description">Formation Akimbo Academy Business Developer / BDR B2B SaaS : outbound structuré, 500 cold calls, qualification BANT/MEDDIC, séquences multicanales, stack tech maîtrisé.</div>
+</div>
+<div class="story-item">
+<div class="story-period">Aujourd'hui</div>
+<div class="story-description">Prêt à mettre mon expérience terrain au service de <strong>Tenacy</strong> et à devenir votre prochain top performer BDR.</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="skills-grid">
+<div class="skill-card">
+<div class="skill-icon">🎯</div>
+<div class="skill-title">Expertise Prospection</div>
+<div class="skill-description">Stack tech complet (LemList, Sales Navigator, PhantomBuster) et méthodologies (BANT, MEDDIC, SPIN)</div>
+</div>
+<div class="skill-card">
+<div class="skill-icon">📊</div>
+<div class="skill-title">Résultats Prouvés</div>
+<div class="skill-description">+175% CA et gestion de 180 comptes mid-market/grands comptes pendant 5 ans</div>
+</div>
+<div class="skill-card">
+<div class="skill-icon">💪</div>
+<div class="skill-title">Soft Skills BDR</div>
+<div class="skill-description">Résilience, discipline, endurance commerciale et approche structurée du cycle de vente</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+<div class="container">
+<div class="cta-content">
+<div class="cta-badge">✅ Disponible immédiatement</div>
+<h2 class="cta-title">Prêt à démarrer ?</h2>
+<p class="cta-subtitle">Je suis convaincu que mon profil peut contribuer à la croissance de Tenacy.<br>Discutons-en autour d'un café à Lyon ou en visio !</p>
+<div class="cta-buttons">
+<a href="/cdn-cgi/l/email-protection#d0b8a5b7bffea4b9a4bfbeb590b7bdb1b9bcfeb3bfbdefa3a5b2bab5b3a4ed93b1beb4b9b4b1a4a5a2b5f5e2e0929482f5e2e0fdf5e2e084b5beb1b3a9f6b2bfb4a9ed92bfbebabfa5a2f5e2e098a5b7bffcf5e094f5e091f5e094f5e0919af7b1b9f5e2e0b3bfbea3a5bca41379f5e2e0a6bfa4a2b5f5e2e0b3b1beb4b9b4b1a4a5a2b5f5e2e0b5a4f5e2e0bab5f5e2e0a3bfa5b8b1b9a4b5f5e2e01379b3b8b1beb7b5a2f5e2e0b1a6b5b3f5e2e0a6bfa5a3fe" class="btn btn-primary">✉️ Planifions un échange</a>
+<a href="tel:+33778203627" class="btn btn-secondary">📞 07-78-20-36-27</a>
+<a href="https://www.linkedin.com/in/hugo-titone" target="_blank" class="btn btn-secondary">💼 Mon LinkedIn</a>
+<a href="https://drive.google.com/file/d/1g0K8N5ctHkDb-K20TEPDXL9fUbtPvH6K/view?usp=sharing" target="_blank" class="btn btn-secondary">📄 Télécharger mon CV</a>
+</div>
+</div>
+</div>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Sticky header on scroll
+window.addEventListener('scroll', function() {
+  const header = document.getElementById('stickyHeader');
+  if (window.scrollY > 100) {
+    header.classList.add('visible');
+  } else {
+    header.classList.remove('visible');
+  }
+})
